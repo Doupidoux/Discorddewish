@@ -63,7 +63,7 @@
             align-items: center;
             flex-direction: column;
             text-align: center;
-            height: calc(100vh - 60px);
+            padding: 20px;
         }
 
         h1 {
@@ -145,6 +145,62 @@
             display: none;
         }
 
+        /* Style pour la section de messagerie */
+        #messageSection {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #messageSection textarea {
+            width: 80%;
+            height: 100px;
+            padding: 10px;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        #messageSection button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #messageSection button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Style pour la galerie de photos */
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .photo-gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid #007bff;
+        }
+
+        /* Style pour les sections cachées */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
     </style>
 </head>
 
@@ -153,13 +209,14 @@
     <nav>
         <div class="logo">Flagustapulle</div>
         <div class="nav-links">
-            <a href="#">Accueil</a>
-            <a href="#">Contact</a>
+            <a href="#" class="nav-link" data-section="home">Accueil</a>
+            <a href="#" class="nav-link" data-section="photos">Photos</a>
+            <a href="#" class="nav-link" data-section="contact">Contact</a>
             <button id="callPerson" class="nav-button">Appeler une personne</button>
         </div>
     </nav>
 
-    <div class="content">
+    <div id="home" class="section content active">
         <h1>Venez nous aider à finir notre jeu</h1>
         <p>
             Nous sommes en train de créer un jeu passionnant, et nous avons besoin de votre aide pour l'achever.
@@ -189,12 +246,33 @@
         <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley" class="button" target="_blank">Participer maintenant</a>
 
         <div id="audioStreams"></div>
+
+        <!-- Section de messagerie -->
+        <div id="messageSection">
+            <textarea id="messageInput" placeholder="Entrez votre message ici..."></textarea>
+            <button id="sendMessage" class="button">Envoyer</button>
+        </div>
+    </div>
+
+    <div id="photos" class="section content">
+        <h1>Galerie de Photos</h1>
+        <div class="photo-gallery">
+            <img src="https://via.placeholder.com/200" alt="Photo 1">
+            <img src="https://via.placeholder.com/200" alt="Photo 2">
+            <img src="https://via.placeholder.com/200" alt="Photo 3">
+            <img src="https://via.placeholder.com/200" alt="Photo 4">
+            <!-- Ajoutez plus de photos ici -->
+        </div>
+    </div>
+
+    <div id="contact" class="section content">
+        <h1>Contactez-nous</h1>
+        <p>Pour plus d'informations, veuillez nous contacter à l'adresse suivante :</p>
+        <p><a href="mailto:contact@flagustapulle.com">contact@flagustapulle.com</a></p>
     </div>
 
     <footer>
-        <p>© 2025 Flagustapulle - Tous droits réservés. <br>
-            <a href="#">Contactez-nous</a> pour plus d'informations.
-        </p>
+        <p>© 2025 Flagustapulle - Tous droits réservés.</p>
     </footer>
 
     <script>
@@ -204,6 +282,10 @@
         const usernameInput = document.getElementById('username');
         const userSelect = document.getElementById('userSelect');
         const startCallButton = document.getElementById('startCall');
+        const sendMessageButton = document.getElementById('sendMessage');
+        const messageInput = document.getElementById('messageInput');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
 
         // Fonction pour afficher la sélection des utilisateurs après avoir saisi un pseudo
         setUsernameButton.addEventListener('click', () => {
@@ -222,6 +304,29 @@
             const selectedUser = userSelect.value;
             alert(`Appel en cours vers ${selectedUser}.`);
             // Logique WebRTC ou autres pour établir la communication ici
+        });
+
+        // Fonction pour envoyer un message
+        sendMessageButton.addEventListener('click', () => {
+            const message = messageInput.value.trim();
+            if (message) {
+                alert(`Message envoyé: ${message}`);
+                messageInput.value = ''; // Réinitialiser le champ de message
+            } else {
+                alert('Veuillez entrer un message valide.');
+            }
+        });
+
+        // Fonction pour basculer entre les sections
+        navLinks.forEach(link => {
+            link.addEventListener('click', (event) => {
+                event.preventDefault();
+                const sectionId = link.getAttribute('data-section');
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(sectionId).classList.add('active');
+            });
         });
     </script>
 
